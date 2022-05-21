@@ -38,7 +38,7 @@ public class RoutingConfiguration {
 //        var workerProp = properties.getWorker();
 //        DataSource workerDataSource = createDataSource(properties.getUrl(), workerProp.getUsername(), workerProp.getPassword());
 //        targetDataSources.put(ClientDatabase.WORKER, workerDataSource);
-        var adminProp = properties.getWorker();
+        var adminProp = properties.getAdmin();
         DataSource adminDataSource = createDataSource(properties.getUrl(), adminProp.getUsername(), adminProp.getPassword());
         targetDataSources.put(ClientDatabase.ADMIN, adminDataSource);
 
