@@ -1,8 +1,9 @@
 server.port: 8081
 server.servlet.context-path: /warehouse-backend
 
-spring:
+app:
   routing-database:
+    url: jdbc:postgresql://localhost:5433/warehouse-test2
     representative:
       username: username
       password: password
@@ -12,6 +13,8 @@ spring:
     admin:
       username: postgres
       password: Dem513454
+
+spring:
 # For single connections only
 #  datasource:
 #    url: jdbc:postgresql://localhost:5433/warehouse-test1

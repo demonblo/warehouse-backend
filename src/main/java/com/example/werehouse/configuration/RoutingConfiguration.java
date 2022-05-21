@@ -1,11 +1,11 @@
 package com.example.werehouse.configuration;
 
 import com.example.werehouse.component.ClientDataSourceRouter;
+import com.example.werehouse.component.RoutingDatabaseProperties;
 import com.example.werehouse.model.ClientDatabase;
 import com.zaxxer.hikari.HikariDataSource;
-import liquibase.integration.spring.SpringLiquibase;
 import lombok.SneakyThrows;
-import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,12 +15,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
+@EnableConfigurationProperties(RoutingDatabaseProperties.class)
 public class RoutingConfiguration {
 
-    private DataSource createDataSource(String username, String password) {
+    private DataSource createDataSource(String url, String username, String password) {
         return DataSourceBuilder.create()
                 .type(HikariDataSource.class)
-                .url("jdbc:postgresql://localhost:5433/warehouse-test2")
+                .url(url)
                 .username(username)
                 .password(password)
                 .build();
@@ -28,13 +29,17 @@ public class RoutingConfiguration {
 
     @Bean
     @SneakyThrows
-    public DataSource dataSource() {
+    public DataSource dataSource(RoutingDatabaseProperties properties) {
         Map<Object, Object> targetDataSources = new HashMap<>();
-//        DataSource userDataSource = createDataSource();
-//        targetDataSources.put(ClientDatabase.WORKER, userDataSource);
-//        DataSource repDataSource = createDataSource("user", "chmo");
+
+//        var repProp = properties.getRepresentative();
+//        DataSource repDataSource = createDataSource(properties.getUrl(), repProp.getUsername(), repProp.getPassword());
 //        targetDataSources.put(ClientDatabase.REPRESENTATIVE, repDataSource);
-        DataSource adminDataSource = createDataSource("postgres", "Dem513454");
+//        var workerProp = properties.getWorker();
+//        DataSource workerDataSource = createDataSource(properties.getUrl(), workerProp.getUsername(), workerProp.getPassword());
+//        targetDataSources.put(ClientDatabase.WORKER, workerDataSource);
+        var adminProp = properties.getWorker();
+        DataSource adminDataSource = createDataSource(properties.getUrl(), adminProp.getUsername(), adminProp.getPassword());
         targetDataSources.put(ClientDatabase.ADMIN, adminDataSource);
 
         ClientDataSourceRouter clientDataSourceRouter = new ClientDataSourceRouter();

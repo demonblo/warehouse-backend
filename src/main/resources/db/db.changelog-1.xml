@@ -50,4 +50,9 @@
                                  constraintName="item_shelf_id_fk" referencedTableName="shelf"
                                  referencedColumnNames="id"/>
     </changeSet>
+    <changeSet id="add_name_to_user" author="demonblo">
+        <addColumn tableName="user">
+            <column name="name" type="text"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
