@@ -1,0 +1,29 @@
+server.port: 8081
+server.servlet.context-path: /warehouse-backend
+
+spring:
+  routing-database:
+    representative:
+      username: username
+      password: password
+    worker:
+      username: username
+      password: password
+    admin:
+      username: postgres
+      password: Dem513454
+# For single connections only
+#  datasource:
+#    url: jdbc:postgresql://localhost:5433/warehouse-test1
+#    username: postgres
+#    password: Dem513454
+  liquibase:
+    enabled: true
+    change-log: db/db.changelog-master.xml
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+
+

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd
+		http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.9.xsd">
+    <changeSet id="create_user_table" author="demonblo">
+        <createTable tableName="user">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" primaryKeyName="user_id_pk"/>
+            </column>
+            <column name="password" type="text"/>
+            <column name="role" type="text"/>
+        </createTable>
+        <createSequence sequenceName="user_id_seq" incrementBy="1" startValue="1"/>
+    </changeSet>
+    <changeSet id="create_shelf_table" author="demonblo">
+        <createTable tableName="shelf">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" primaryKeyName="shelf_id_pk"/>
+            </column>
+            <column name="number" type="text"/>
+            <column name="max_weight" type="double precision"/>
+            <column name="free_weight" type="double precision"/>
+        </createTable>
+        <createSequence sequenceName="shelf_id_seq" incrementBy="1" startValue="1"/>
+    </changeSet>
+    <changeSet id="create_item_table" author="demonblo">
+        <createTable tableName="item">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" primaryKeyName="item_id_pk"/>
+            </column>
+            <column name="name" type="text"/>
+            <column name="length" type="double precision"/>
+            <column name="width" type="double precision"/>
+            <column name="depth" type="double precision"/>
+            <column name="weight" type="double precision"/>
+            <column name="user_id" type="bigint"/>
+            <column name="shelf_id" type="bigint"/>
+        </createTable>
+        <createSequence sequenceName="item_id_seq" incrementBy="1" startValue="1"/>
+        <addForeignKeyConstraint baseTableName="item" baseColumnNames="user_id"
+                                 constraintName="item_user_id_fk" referencedTableName="user"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="item" baseColumnNames="shelf_id"
+                                 constraintName="item_shelf_id_fk" referencedTableName="shelf"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>

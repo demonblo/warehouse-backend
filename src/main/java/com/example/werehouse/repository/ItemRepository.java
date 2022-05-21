@@ -1,6 +1,6 @@
-package com.example.werehouse.repo;
+package com.example.werehouse.repository;
 
-import com.example.werehouse.models.Item;
+import com.example.werehouse.model.Item;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
