@@ -3,7 +3,7 @@ server.servlet.context-path: /warehouse-backend
 
 app:
   routing-database:
-    url: jdbc:postgresql://localhost:5433/warehouse-test2
+    url: jdbc:postgresql://localhost:5433/warehouse-test5
     representative:
       username: username
       password: password
