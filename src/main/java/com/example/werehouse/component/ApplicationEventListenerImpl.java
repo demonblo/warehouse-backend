@@ -1,5 +1,6 @@
 package com.example.werehouse.component;
 
+import com.example.werehouse.model.ClientDatabase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.event.EventListener;
@@ -16,8 +17,8 @@ public class ApplicationEventListenerImpl {
     public void handleApplicationStarted() {
         if (dataSource instanceof ClientDataSourceRouter) {
             ClientDataSourceRouter router = (ClientDataSourceRouter)dataSource;
-            // TODO: var defaultDataSource = router.getResolvedDataSources().get(ClientDatabase.ADMIN);
-            router.setDefaultTargetDataSource(null);
+            var defaultDataSource = router.getResolvedDataSources().get(ClientDatabase.ASSISTANT);
+            router.setDefaultTargetDataSource(defaultDataSource);
         }
     }
 }

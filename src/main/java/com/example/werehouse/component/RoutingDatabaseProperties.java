@@ -10,6 +10,8 @@ public class RoutingDatabaseProperties {
     private RoutingDatabaseCredentials representative;
     private RoutingDatabaseCredentials worker;
     private RoutingDatabaseCredentials admin;
+    private RoutingDatabaseCredentials owner;
+    private RoutingDatabaseCredentials assistant;
 
     @Data
     public static class RoutingDatabaseCredentials {

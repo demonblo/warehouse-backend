@@ -32,19 +32,25 @@ public class RoutingConfiguration {
     public DataSource dataSource(RoutingDatabaseProperties properties) {
         Map<Object, Object> targetDataSources = new HashMap<>();
 
-//        var repProp = properties.getRepresentative();
-//        DataSource repDataSource = createDataSource(properties.getUrl(), repProp.getUsername(), repProp.getPassword());
-//        targetDataSources.put(ClientDatabase.REPRESENTATIVE, repDataSource);
-//        var workerProp = properties.getWorker();
-//        DataSource workerDataSource = createDataSource(properties.getUrl(), workerProp.getUsername(), workerProp.getPassword());
-//        targetDataSources.put(ClientDatabase.WORKER, workerDataSource);
+        var repProp = properties.getRepresentative();
+        DataSource repDataSource = createDataSource(properties.getUrl(), repProp.getUsername(), repProp.getPassword());
+        targetDataSources.put(ClientDatabase.REPRESENTATIVE, repDataSource);
+        var workerProp = properties.getWorker();
+        DataSource workerDataSource = createDataSource(properties.getUrl(), workerProp.getUsername(), workerProp.getPassword());
+        targetDataSources.put(ClientDatabase.WORKER, workerDataSource);
         var adminProp = properties.getAdmin();
         DataSource adminDataSource = createDataSource(properties.getUrl(), adminProp.getUsername(), adminProp.getPassword());
         targetDataSources.put(ClientDatabase.ADMIN, adminDataSource);
+        var ownerProp = properties.getOwner();
+        DataSource ownerDataSource = createDataSource(properties.getUrl(), ownerProp.getUsername(), ownerProp.getPassword());
+        targetDataSources.put(ClientDatabase.OWNER, ownerDataSource);
+        var assistantProp = properties.getAssistant();
+        DataSource assistantDataSource = createDataSource(properties.getUrl(), assistantProp.getUsername(), assistantProp.getPassword());
+        targetDataSources.put(ClientDatabase.ASSISTANT, assistantDataSource);
 
         ClientDataSourceRouter clientDataSourceRouter = new ClientDataSourceRouter();
         clientDataSourceRouter.setTargetDataSources(targetDataSources);
-        clientDataSourceRouter.setDefaultTargetDataSource(adminDataSource);
+        clientDataSourceRouter.setDefaultTargetDataSource(ownerDataSource);
         return clientDataSourceRouter;
     }
 }

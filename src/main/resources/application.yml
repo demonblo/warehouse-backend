@@ -3,16 +3,22 @@ server.servlet.context-path: /warehouse-backend
 
 app:
   routing-database:
-    url: jdbc:postgresql://localhost:5433/warehouse-test5
+    url: jdbc:postgresql://localhost:5433/warehouse-test6
     representative:
-      username: username
-      password: password
+      username: wh_representative
+      password: rep_pass
     worker:
-      username: username
-      password: password
+      username: wh_worker
+      password: worker_pass
     admin:
+      username: wh_admin
+      password: admin_pass
+    owner:
       username: postgres
       password: Dem513454
+    assistant:
+      username: wh_login_assistant
+      password: assist_pass
 
 spring:
 # For single connections only

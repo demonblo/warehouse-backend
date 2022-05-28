@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd
+		http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.9.xsd">
+    <changeSet id="remove_wh_worker_with_privileges" author="demonblo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="true">
+                select exists(SELECT 1 from pg_roles where rolname = 'wh_worker');
+            </sqlCheck>
+        </preConditions>
+        <sql>
+            DROP OWNED BY wh_worker;
+            DROP ROLE IF EXISTS wh_worker;
+        </sql>
+    </changeSet>
+    <changeSet id="remove_wh_representative_with_privileges" author="demonblo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="true">
+                select exists(SELECT 1 from pg_roles where rolname = 'wh_representative');
+            </sqlCheck>
+        </preConditions>
+        <sql>
+            DROP OWNED BY wh_representative;
+            DROP ROLE IF EXISTS wh_representative;
+        </sql>
+    </changeSet>
+    <changeSet id="remove_wh_admin_with_privileges" author="demonblo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="true">
+                select exists(SELECT 1 from pg_roles where rolname = 'wh_admin');
+            </sqlCheck>
+        </preConditions>
+        <sql>
+            DROP OWNED BY wh_admin;
+            DROP ROLE IF EXISTS wh_admin;
+        </sql>
+    </changeSet>
+    <changeSet id="remove_wh_login_assistant_with_privileges" author="demonblo">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="true">
+                select exists(SELECT 1 from pg_roles where rolname = 'wh_login_assistant');
+            </sqlCheck>
+        </preConditions>
+        <sql>
+            DROP OWNED BY wh_login_assistant;
+            DROP ROLE IF EXISTS wh_login_assistant;
+        </sql>
+    </changeSet>
+    <changeSet id="add_db_roles" author="demonblo">
+        <sql>
+            CREATE ROLE wh_worker WITH LOGIN
+                PASSWORD 'worker_pass' CONNECTION LIMIT -1;
+            GRANT ALL ON shelf TO wh_worker;
+            GRANT ALL ON item TO wh_worker;
+        </sql>
+        <sql>
+            CREATE ROLE wh_representative
+                WITH LOGIN
+                PASSWORD 'rep_pass' CONNECTION LIMIT -1;
+            GRANT SELECT ON item TO wh_representative;
+            GRANT SELECT ON shelf TO wh_representative;
+        </sql>
+        <sql>
+            CREATE ROLE wh_admin
+                WITH LOGIN SUPERUSER
+                PASSWORD 'admin_pass'
+                CONNECTION LIMIT -1;
+        </sql>
+        <sql>
+            CREATE ROLE wh_login_assistant
+                WITH LOGIN
+                PASSWORD 'assist_pass'
+                CONNECTION LIMIT -1;
+            GRANT SELECT ON public.user TO wh_login_assistant;
+        </sql>
+    </changeSet>
+</databaseChangeLog>
