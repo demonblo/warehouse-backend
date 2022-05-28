@@ -58,6 +58,8 @@
                 PASSWORD 'worker_pass' CONNECTION LIMIT -1;
             GRANT ALL ON shelf TO wh_worker;
             GRANT ALL ON item TO wh_worker;
+            GRANT USAGE, SELECT ON SEQUENCE shelf_id_seq TO wh_worker;
+            GRANT USAGE, SELECT ON SEQUENCE item_id_seq TO wh_worker;
         </sql>
         <sql>
             CREATE ROLE wh_representative
