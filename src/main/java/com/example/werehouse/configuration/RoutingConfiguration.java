@@ -11,46 +11,39 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
-import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
 @EnableConfigurationProperties(RoutingDatabaseProperties.class)
 public class RoutingConfiguration {
 
-    private DataSource createDataSource(String url, String username, String password) {
+    private DataSource createDataSource(String url, RoutingDatabaseProperties.RoutingDatabaseCredentials credentials) {
         return DataSourceBuilder.create()
                 .type(HikariDataSource.class)
                 .url(url)
-                .username(username)
-                .password(password)
+                .username(credentials.getUsername())
+                .password(credentials.getPassword())
                 .build();
     }
 
     @Bean
     @SneakyThrows
     public DataSource dataSource(RoutingDatabaseProperties properties) {
-        Map<Object, Object> targetDataSources = new HashMap<>();
-
-        var repProp = properties.getRepresentative();
-        DataSource repDataSource = createDataSource(properties.getUrl(), repProp.getUsername(), repProp.getPassword());
-        targetDataSources.put(ClientDatabase.REPRESENTATIVE, repDataSource);
-        var workerProp = properties.getWorker();
-        DataSource workerDataSource = createDataSource(properties.getUrl(), workerProp.getUsername(), workerProp.getPassword());
-        targetDataSources.put(ClientDatabase.WORKER, workerDataSource);
-        var adminProp = properties.getAdmin();
-        DataSource adminDataSource = createDataSource(properties.getUrl(), adminProp.getUsername(), adminProp.getPassword());
-        targetDataSources.put(ClientDatabase.ADMIN, adminDataSource);
-        var ownerProp = properties.getOwner();
-        DataSource ownerDataSource = createDataSource(properties.getUrl(), ownerProp.getUsername(), ownerProp.getPassword());
-        targetDataSources.put(ClientDatabase.OWNER, ownerDataSource);
-        var assistantProp = properties.getAssistant();
-        DataSource assistantDataSource = createDataSource(properties.getUrl(), assistantProp.getUsername(), assistantProp.getPassword());
-        targetDataSources.put(ClientDatabase.ASSISTANT, assistantDataSource);
-
+        Map<Object, Object> targetDataSources = Map.of(
+                ClientDatabase.REPRESENTATIVE,
+                createDataSource(properties.getUrl(), properties.getRepresentative()),
+                ClientDatabase.WORKER,
+                createDataSource(properties.getUrl(), properties.getWorker()),
+                ClientDatabase.ADMIN,
+                createDataSource(properties.getUrl(), properties.getAdmin()),
+                ClientDatabase.OWNER,
+                createDataSource(properties.getUrl(), properties.getOwner()),
+                ClientDatabase.ASSISTANT,
+                createDataSource(properties.getUrl(), properties.getAssistant())
+        );
         ClientDataSourceRouter clientDataSourceRouter = new ClientDataSourceRouter();
         clientDataSourceRouter.setTargetDataSources(targetDataSources);
-        clientDataSourceRouter.setDefaultTargetDataSource(ownerDataSource);
+        clientDataSourceRouter.setDefaultTargetDataSource(targetDataSources.get(ClientDatabase.OWNER));
         return clientDataSourceRouter;
     }
 }
