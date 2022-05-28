@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd
+		http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.9.xsd">
+    <changeSet id="add_update_item_trigger" author="demonblo">
+        <createProcedure>
+            CREATE OR REPLACE FUNCTION update_free_weight_trigger()
+            RETURNS TRIGGER AS
+            $func$
+            BEGIN
+            UPDATE shelf SET free_weight = free_weight + OLD.weight WHERE id = OLD.shelf_id;
+            UPDATE shelf SET free_weight = free_weight - NEW.weight WHERE id = NEW.shelf_id;
+            RETURN NEW;
+            END
+            $func$ LANGUAGE plpgsql;
+        </createProcedure>
+        <sql>
+            CREATE TRIGGER update_free_weight
+                BEFORE UPDATE ON item
+                FOR EACH ROW
+                EXECUTE FUNCTION update_free_weight_trigger();
+        </sql>
+    </changeSet>
+    <changeSet id="test_update_trigger" author="demonblo">
+        <update tableName="item">
+            <column name="shelf_id" value="1" />
+            <where> name='ВЫБ-РЫБ-it-01' </where>
+        </update>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd
+		http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.9.xsd">
+    <changeSet id="add_delete_item_trigger" author="demonblo">
+        <createProcedure>
+            CREATE OR REPLACE FUNCTION delete_free_weight_trigger()
+            RETURNS TRIGGER AS
+            $func$
+            BEGIN
+            UPDATE shelf SET free_weight = free_weight + OLD.weight WHERE id = OLD.shelf_id;
+            RETURN OLD;
+            END
+            $func$ LANGUAGE plpgsql;
+        </createProcedure>
+        <sql>
+            CREATE TRIGGER delete_free_weight
+                BEFORE DELETE ON item
+                FOR EACH ROW
+                EXECUTE FUNCTION delete_free_weight_trigger();
+        </sql>
+    </changeSet>
+    <changeSet id="insert_users" author="demonblo">
+        <insert tableName="user">
+            <column name="id" valueSequenceNext="user_id_seq"/>
+            <column name="name" value="Иван-Сидоров"/>
+            <column name="password" value="94325970"/>
+            <column name="role" value="WORKER"/>
+        </insert>
+        <insert tableName="user">
+            <column name="id" valueSequenceNext="user_id_seq"/>
+            <column name="name" value="Иван-Богатырев"/>
+            <column name="password" value="78751527"/>
+            <column name="role" value="WORKER"/>
+        </insert>
+        <insert tableName="user">
+            <column name="id" valueSequenceNext="user_id_seq"/>
+            <column name="name" value="Иван-Седов"/>
+            <column name="password" value="28771251"/>
+            <column name="role" value="WORKER"/>
+        </insert>
+        <insert tableName="user">
+            <column name="id" valueSequenceNext="user_id_seq"/>
+            <column name="name" value="Иван-Крят"/>
+            <column name="password" value="54146439"/>
+            <column name="role" value="WORKER"/>
+        </insert>
+        <insert tableName="user">
+            <column name="id" valueSequenceNext="user_id_seq"/>
+            <column name="name" value="Иван-Быстров"/>
+            <column name="password" value="84939526"/>
+            <column name="role" value="WORKER"/>
+        </insert>
+        <insert tableName="user">
+            <column name="id" valueSequenceNext="user_id_seq"/>
+            <column name="name" value="Андрей-Сидоров"/>
+            <column name="password" value="88945404"/>
+            <column name="role" value="WORKER"/>
+        </insert>
+        <insert tableName="user">
+            <column name="id" valueSequenceNext="user_id_seq"/>
+            <column name="name" value="Андрей-Богатырев"/>
+            <column name="password" value="90974218"/>
+            <column name="role" value="WORKER"/>
+        </insert>
+        <insert tableName="user">
+            <column name="id" valueSequenceNext="user_id_seq"/>
+            <column name="name" value="Андрей-Седов"/>
+            <column name="password" value="27577162"/>
+            <column name="role" value="WORKER"/>
+        </insert>
+        <insert tableName="user">
+            <column name="id" valueSequenceNext="user_id_seq"/>
+            <column name="name" value="Андрей-Крят"/>
+            <column name="password" value="54499662"/>
+            <column name="role" value="WORKER"/>
+        </insert>
+        <insert tableName="user">
+            <column name="id" valueSequenceNext="user_id_seq"/>
+            <column name="name" value="Андрей-Быстров"/>
+            <column name="password" value="45539480"/>
+            <column name="role" value="WORKER"/>
+        </insert>
+        <insert tableName="user">
+            <column name="id" valueSequenceNext="user_id_seq"/>
+            <column name="name" value="Дмитрий-Сидоров"/>
+            <column name="password" value="86274665"/>
+            <column name="role" value="WORKER"/>
+        </insert>
+        <insert tableName="user">
+            <column name="id" valueSequenceNext="user_id_seq"/>
+            <column name="name" value="Дмитрий-Богатырев"/>
+            <column name="password" value="90323859"/>
+            <column name="role" value="WORKER"/>
+        </insert>
+        <insert tableName="user">
+            <column name="id" valueSequenceNext="user_id_seq"/>
+            <column name="name" value="Дмитрий-Седов"/>
+            <column name="password" value="81754367"/>
+            <column name="role" value="WORKER"/>
+        </insert>
+        <insert tableName="user">
+            <column name="id" valueSequenceNext="user_id_seq"/>
+            <column name="name" value="Дмитрий-Крят"/>
+            <column name="password" value="48495353"/>
+            <column name="role" value="WORKER"/>
+        </insert>
+        <insert tableName="user">
+            <column name="id" valueSequenceNext="user_id_seq"/>
+            <column name="name" value="Дмитрий-Быстров"/>
+            <column name="password" value="62610593"/>
+            <column name="role" value="WORKER"/>
+        </insert>
+        <insert tableName="user">
+            <column name="id" valueSequenceNext="user_id_seq"/>
+            <column name="name" value="Никита-Сидоров"/>
+            <column name="password" value="13246646"/>
+            <column name="role" value="WORKER"/>
+        </insert>
+        <insert tableName="user">
+            <column name="id" valueSequenceNext="user_id_seq"/>
+            <column name="name" value="Никита-Богатырев"/>
+            <column name="password" value="45508684"/>
+            <column name="role" value="WORKER"/>
+        </insert>
+        <insert tableName="user">
+            <column name="id" valueSequenceNext="user_id_seq"/>
+            <column name="name" value="Никита-Седов"/>
+            <column name="password" value="19160394"/>
+            <column name="role" value="WORKER"/>
+        </insert>
+        <insert tableName="user">
+            <column name="id" valueSequenceNext="user_id_seq"/>
+            <column name="name" value="Никита-Крят"/>
+            <column name="password" value="64462669"/>
+            <column name="role" value="WORKER"/>
+        </insert>
+        <insert tableName="user">
+            <column name="id" valueSequenceNext="user_id_seq"/>
+            <column name="name" value="Никита-Быстров"/>
+            <column name="password" value="84215636"/>
+            <column name="role" value="WORKER"/>
+        </insert>
+        <insert tableName="user">
+            <column name="id" valueSequenceNext="user_id_seq"/>
+            <column name="name" value="Максим-Сидоров"/>
+            <column name="password" value="63770318"/>
+            <column name="role" value="WORKER"/>
+        </insert>
+        <insert tableName="user">
+            <column name="id" valueSequenceNext="user_id_seq"/>
+            <column name="name" value="Максим-Богатырев"/>
+            <column name="password" value="48874159"/>
+            <column name="role" value="WORKER"/>
+        </insert>
+        <insert tableName="user">
+            <column name="id" valueSequenceNext="user_id_seq"/>
+            <column name="name" value="Максим-Седов"/>
+            <column name="password" value="48060165"/>
+            <column name="role" value="WORKER"/>
+        </insert>
+        <insert tableName="user">
+            <column name="id" valueSequenceNext="user_id_seq"/>
+            <column name="name" value="Максим-Крят"/>
+            <column name="password" value="17278517"/>
+            <column name="role" value="WORKER"/>
+        </insert>
+        <insert tableName="user">
+            <column name="id" valueSequenceNext="user_id_seq"/>
+            <column name="name" value="Максим-Быстров"/>
+            <column name="password" value="92655780"/>
+            <column name="role" value="WORKER"/>
+        </insert>
+        <insert tableName="user">
+            <column name="id" valueSequenceNext="user_id_seq"/>
+            <column name="name" value="ADMIN"/>
+            <column name="password" value="51345451"/>
+            <column name="role" value="ADMIN"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
