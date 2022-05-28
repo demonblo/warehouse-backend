@@ -8,7 +8,6 @@ import com.example.werehouse.model.User;
 import com.example.werehouse.service.UserService;
 import com.example.werehouse.util.JwtTokenUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,8 +24,7 @@ public class AuthController {
        ClientDatabaseContextHolder.set(ClientDatabase.ASSISTANT);
        User user = userService.findByNameAndPassword(request.getUsername(), request.getPassword());
        ClientDatabaseContextHolder.clear();
-       UserDetails userDetails = userService.mapUserToUserDetails(user);
-       String token = JwtTokenUtils.generateToken(userDetails.getUsername(), userDetails.getAuthorities());
+       String token = JwtTokenUtils.generateToken(user.getUsername(), user.getAuthorities());
        return JwtResponse.builder().token(token).build();
     }
 }
