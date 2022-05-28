@@ -17,8 +17,7 @@ public class ApplicationEventListenerImpl {
     public void handleApplicationStarted() {
         if (dataSource instanceof ClientDataSourceRouter) {
             ClientDataSourceRouter router = (ClientDataSourceRouter)dataSource;
-            var defaultDataSource = router.getResolvedDataSources().get(ClientDatabase.ASSISTANT);
-            router.setDefaultTargetDataSource(defaultDataSource);
+            router.setDefaultTargetDataSource(router.getResolvedDataSources().get(ClientDatabase.ASSISTANT));
         }
     }
 }
