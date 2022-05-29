@@ -1,6 +1,7 @@
 package com.example.werehouse.component;
 
-import com.example.werehouse.util.JwtTokenUtils;
+import com.example.werehouse.service.UserService;
+import com.example.werehouse.util.AuthUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -21,9 +22,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
+    private final UserService userService;
 
-    public JwtAuthorizationFilter(AuthenticationManager authenticationManager) {
+    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, UserService userService) {
         super(authenticationManager);
+        this.userService = userService;
     }
 
     @SuppressWarnings("unchecked")
@@ -39,7 +42,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         }
 
         try {
-            JwtTokenUtils.verifyToken(token);
+            AuthUtils.verifyToken(token);
         } catch (JwtException e) {
             SecurityContextHolder.getContext().setAuthentication(null);
             response.setStatus(401);
@@ -48,7 +51,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             return;
         }
 
-        Claims claims = JwtTokenUtils.getClaimsFromToken(token);
+        Claims claims = AuthUtils.getClaimsFromToken(token);
 
         List<String> authorities = claims.get("authorities", ArrayList.class);
 
@@ -62,7 +65,11 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         String username = claims.getSubject();
         if (username != null) {
             SecurityContextHolder.getContext().setAuthentication(
-                    new UsernamePasswordAuthenticationToken(username, null, roleList)
+                    new UsernamePasswordAuthenticationToken(
+                            userService.loadUserByUsername(username),
+                            null,
+                            roleList
+                    )
             );
             chain.doFilter(request, response);
         } else {
