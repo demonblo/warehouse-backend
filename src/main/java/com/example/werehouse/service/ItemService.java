@@ -44,6 +44,13 @@ public class ItemService {
         return items;
     }
 
+    public List<Item> findAllByVendorCode(String vendorCode) {
+        ClientDatabaseContextHolder.set(AuthUtils.getActiveClientDatabase());
+        List<Item> items = itemRepository.findAllByVendorCodeContaining(vendorCode);
+        ClientDatabaseContextHolder.clear();
+        return items;
+    }
+
     public void deleteById(Long id) {
         ClientDatabaseContextHolder.set(AuthUtils.getActiveClientDatabase());
         itemRepository.deleteById(id);

@@ -38,6 +38,11 @@ public class ItemController {
         return itemService.findAllByName(name);
     }
 
+    @GetMapping(params = {"vendorCode"})
+    public List<Item> getAllByVendorCode(@RequestParam String vendorCode) {
+        return itemService.findAllByVendorCode(vendorCode);
+    }
+
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable Long id) {
         itemService.deleteById(id);

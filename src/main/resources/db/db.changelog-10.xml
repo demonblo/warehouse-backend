@@ -8,12 +8,9 @@
 		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd
 		http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
 		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.9.xsd">
-    <include file="db/db.changelog-1.xml"/>
-    <include file="db/db.changelog-2.xml"/>
-    <include file="db/db.changelog-3.xml"/>
-    <include file="db/db.changelog-4.xml"/>
-    <include file="db/db.changelog-5.xml"/>
-    <include file="db/db.changelog-7.xml"/>
-    <include file="db/db.changelog-8.xml"/>
-    <include file="db/db.changelog-9.xml"/>
+    <changeSet id="create_item_name_index" author="demonblo">
+        <sql>
+            CREATE INDEX name_index ON item (name);
+        </sql>
+    </changeSet>
 </databaseChangeLog>

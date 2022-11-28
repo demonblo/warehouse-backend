@@ -8,25 +8,7 @@
 		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd
 		http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
 		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.9.xsd">
-    <changeSet id="add_delete_item_trigger" author="demonblo">
-        <createProcedure>
-            CREATE OR REPLACE FUNCTION delete_free_weight_trigger()
-            RETURNS TRIGGER AS
-            $func$
-            BEGIN
-            UPDATE shelf SET free_weight = free_weight + OLD.weight * OLD.packages_number WHERE id = OLD.shelf_id;
-            RETURN OLD;
-            END
-            $func$ LANGUAGE plpgsql;
-        </createProcedure>
-        <sql>
-            CREATE TRIGGER delete_free_weight
-                BEFORE DELETE ON item
-                FOR EACH ROW
-                EXECUTE FUNCTION delete_free_weight_trigger();
-        </sql>
-    </changeSet>
-    <changeSet id="insert_users" author="demonblo">
+    <changeSet id="insert_worker_users_and_admin" author="demonblo">
         <insert tableName="user">
             <column name="id" valueSequenceNext="user_id_seq"/>
             <column name="name" value="Иван-Сидоров"/>
@@ -179,7 +161,7 @@
         </insert>
         <insert tableName="user">
             <column name="id" valueSequenceNext="user_id_seq"/>
-            <column name="name" value="ADMIN"/>
+            <column name="name" value="admin-admin"/>
             <column name="password" value="51345451"/>
             <column name="role" value="ADMIN"/>
         </insert>

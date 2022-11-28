@@ -1,5 +1,6 @@
 package com.example.werehouse.mapper;
 
+
 import com.example.werehouse.dto.ItemDto;
 import com.example.werehouse.model.Item;
 import org.mapstruct.Mapper;

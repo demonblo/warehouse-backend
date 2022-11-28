@@ -35,9 +35,10 @@
                 <constraints primaryKey="true" primaryKeyName="item_id_pk"/>
             </column>
             <column name="name" type="text"/>
-            <column name="length" type="double precision"/>
-            <column name="width" type="double precision"/>
-            <column name="depth" type="double precision"/>
+            <column name="items_per_package" type="bigint"/>
+            <column name="packages_number" type="bigint"/>
+            <column name="vendor_code" type="text"/>
+            <column name="invoice" type="text"/>
             <column name="weight" type="double precision"/>
             <column name="user_id" type="bigint"/>
             <column name="shelf_id" type="bigint"/>

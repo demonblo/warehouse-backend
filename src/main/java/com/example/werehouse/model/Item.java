@@ -19,11 +19,12 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "item_id_gen")
     @SequenceGenerator(name="item_id_gen", sequenceName = "item_id_seq", allocationSize = 1)
     private Long id;
-    private String name;
-    private Double length;
-    private Double width;
-    private Double depth;
-    private Double weight;
+    private String name; // название
+    private Long itemsPerPackage; // штук в упаковке
+    private Long packagesNumber; // количество упаковок
+    private String vendorCode; // артикул
+    private String invoice; // номер накладной
+    private Double weight; // вес упаковки
     @ManyToOne
     @JoinColumn(name = "shelf_id")
     private Shelf shelf;

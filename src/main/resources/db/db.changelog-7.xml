@@ -14,8 +14,8 @@
             RETURNS TRIGGER AS
             $func$
             BEGIN
-            UPDATE shelf SET free_weight = free_weight + OLD.weight WHERE id = OLD.shelf_id;
-            UPDATE shelf SET free_weight = free_weight - NEW.weight WHERE id = NEW.shelf_id;
+            UPDATE shelf SET free_weight = free_weight + OLD.weight * OLD.packages_number WHERE id = OLD.shelf_id;
+            UPDATE shelf SET free_weight = free_weight - NEW.weight * NEW.packages_number WHERE id = NEW.shelf_id;
             RETURN NEW;
             END
             $func$ LANGUAGE plpgsql;
@@ -26,12 +26,6 @@
                 FOR EACH ROW
                 EXECUTE FUNCTION update_free_weight_trigger();
         </sql>
-    </changeSet>
-    <changeSet id="test_update_trigger" author="demonblo">
-        <update tableName="item">
-            <column name="shelf_id" value="1" />
-            <where> name='ВЫБ-РЫБ-it-01' </where>
-        </update>
     </changeSet>
 
 </databaseChangeLog>
